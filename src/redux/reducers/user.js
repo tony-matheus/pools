@@ -1,8 +1,7 @@
 /* eslint-disable no-undef */
 import {
-  USER_GET,
-  USER_GET_FAILURE,
-  USER_GET_SUCCESS,
+  USER_GET_ALL,
+  USER_GET_ALL_SUCCESS,
   USER_DELETE,
   USER_DELETE_FAILURE,
   USER_DELETE_SUCCESS,
@@ -13,9 +12,6 @@ import {
   USER_AUTHENTICATE_SUCCESS,
   USER_AUTHENTICATE_FAILURE,
   USER_LOGOUT,
-  USER_SIGNUP,
-  USER_SIGNUP_SUCCESS,
-  USER_SIGNUP_FAILURE,
 } from '../actionTypes'
 
 const initialState = {
@@ -29,12 +25,13 @@ const initialState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    case USER_GET: {
+    case USER_GET_ALL: {
       return {
+        ...state,
         isLoading: true,
       }
     }
-    case USER_GET_SUCCESS: {
+    case USER_GET_ALL_SUCCESS: {
       const keys = Object.keys(action.payload)
       const users = keys.map((key) => action.payload[key])
 
@@ -104,30 +101,12 @@ export default function (state = initialState, action) {
         authenticatedUser: action.payload,
       }
     }
-    case USER_SIGNUP: {
-      return {
-        ...state,
-        isRegistered: false,
-        error: '',
-      }
-    }
-    case USER_SIGNUP_FAILURE: {
-      return {
-        ...state,
-        error: action.payload,
-      }
-    }
-    case USER_SIGNUP_SUCCESS: {
-      return {
-        ...state,
-        isRegistered: true,
-      }
-    }
     case USER_LOGOUT: {
       return {
-        ...initialState,
+        ...state,
         isAuthenticated: false,
-        error: action.payload,
+        error: '',
+        authenticatedUser: {},
       }
     }
     default:

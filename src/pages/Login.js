@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import { useSelector, connect } from 'react-redux'
-import { Box, Button, Input, Text } from '../UI'
-import { authenticate, getAll } from '../redux/actions/users'
+import { Box, Button, Text } from '../UI'
+import { authenticate } from '../redux/actions/users'
+import { Select } from '../UI/Select'
 
 const withConnect = (Component) => {
   const actions = {
     authenticate,
-    getAll,
   }
 
   return connect(null, actions)(Component)
@@ -14,21 +14,12 @@ const withConnect = (Component) => {
 
 export const Login = withConnect(
   // eslint-disable-next-line no-unused-vars
-  ({ authenticate: execAuthenticate, getAll: execGetAll, ...restProps }) => {
-    const [data, setData] = useState({
-      name: 'sarahedo',
-      password: '',
-    })
+  ({ authenticate: execAuthenticate, ...restProps }) => {
+    const [username, setUsername] = useState('sarahedo')
 
-    const handleChange = (e) => {
-      setData({ ...data, [e.target.name]: e.target.value })
-    }
+    const handleClick = () => execAuthenticate({ name: username })
 
-    const handleClick = () => {
-      execAuthenticate({ name: data.name })
-    }
-
-    const { error, isAuthenticated } = useSelector((state) => state.user)
+    const { error, all: users } = useSelector((state) => state.user)
 
     return (
       <Box
@@ -48,19 +39,13 @@ export const Login = withConnect(
           <Text as='h1' mt={0} textAlign='center'>
             Login
           </Text>
-          <Input
-            value={data.name}
+          <Select
             name='name'
-            onChange={handleChange}
-            placeholder='Your Username'
-            mb={10}
+            options={users.map((u) => u.id)}
+            value={username}
+            onChange={setUsername}
+            width='100%'
           />
-          {/* <Input
-          value={data.password}
-          name='password'
-          onChange={handleChange}
-          placeholder='Your Password'
-        /> */}
           <Text color='red'>{error}</Text>
           <Button mt={10} width='100%' p={2} onClick={handleClick} mr={2}>
             Login
