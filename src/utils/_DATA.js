@@ -3,7 +3,8 @@ let users = {
   sarahedo: {
     id: 'sarahedo',
     name: 'Sarah Edo',
-    avatarURL: 'PUT ONE HERE',
+    avatarURL:
+      'https://raw.githubusercontent.com/Ashwinvalento/cartoon-avatar/master/lib/images/male/45.png',
     answers: {
       '8xf0y6ziyjabvozdd253nd': 'optionOne',
       '6ni6ok3ym7mf1p33lnez': 'optionTwo',
@@ -15,7 +16,8 @@ let users = {
   tylermcginnis: {
     id: 'tylermcginnis',
     name: 'Tyler McGinnis',
-    avatarURL: 'PUT ONE HERE',
+    avatarURL:
+      'https://ritecaremedicalofficepc.com/wp-content/uploads/2019/09/img_avatar.png',
     answers: {
       vthrdm985a262al8qx3do: 'optionOne',
       xj352vofupe1dqz9emx13r: 'optionTwo',
@@ -25,7 +27,8 @@ let users = {
   johndoe: {
     id: 'johndoe',
     name: 'John Doe',
-    avatarURL: 'PUT ONE HERE',
+    avatarURL:
+      'https://1.gravatar.com/avatar/dcf6bcac06c1011632d4a4466edd7371?s=180&d=identicon&r=G',
     answers: {
       xj352vofupe1dqz9emx13r: 'optionOne',
       vthrdm985a262al8qx3do: 'optionTwo',

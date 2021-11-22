@@ -36,16 +36,23 @@ export const Pools = withConnect(
       question.optionTwo.votes.includes(authenticatedUser.id)
 
     return (
-      <Box maxWidth={['100%', null, '75%']} minWidth={['100%', null, '50%']}>
-        <Pool
-          id={question.id}
-          avatarUrl={usersById[question.author].avatarUrl}
-          title={`${usersById[question.author].name} asks:`}
-          optionOne={question.optionOne}
-          optionTwo={question.optionTwo}
-          isAnswered={isAnswered}
-          onSubmit={handleSubmit}
-        />
+      <Box display='flex' justifyContent='center'>
+        <Box
+          maxWidth={[1, null, 1 / 2, 3 / 4]}
+          minWidth={['100%', null, '50%']}
+          pt={2}
+        >
+          <Pool
+            id={question.id}
+            avatarUrl={usersById[question.author].avatarURL}
+            title={`${usersById[question.author].name} asks:`}
+            optionOne={question.optionOne}
+            optionTwo={question.optionTwo}
+            votedOption={authenticatedUser.answers[questionId]}
+            isAnswered={isAnswered}
+            onSubmit={handleSubmit}
+          />
+        </Box>
       </Box>
     )
   }

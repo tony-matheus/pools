@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
-import { Box, Button, Text } from '../UI'
+import { Box, Image, Text } from '../UI'
 import { colors } from '../utils/colors'
 
 export const Question = ({ title, optionOne, optionTwo, id, avatarUrl }) => {
@@ -21,11 +21,14 @@ export const Question = ({ title, optionOne, optionTwo, id, avatarUrl }) => {
           justifyContent='center'
           alignItems='center'
         >
-          <Box
+          <Image
             borderRadius='100%'
-            border={`2px solid ${colors.blue.light}`}
             width={100}
             height={100}
+            src={avatarUrl}
+            size='9rem'
+            alt=''
+            mx='auto'
           />
         </Box>
         <Box width={2 / 3} px={2}>

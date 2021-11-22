@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 import { colors } from '../../utils/colors'
-import { Box, Button, Text } from '../../UI'
+import { Box, Button, Image, Text } from '../../UI'
 import { Result } from './Result'
 
 const [OPTION_ONE, OPTION_TWO] = ['optionOne', 'optionTwo']
@@ -11,7 +11,7 @@ export const Pool = ({
   title,
   optionOne,
   optionTwo,
-  id,
+  // id,
   avatarUrl,
   onSubmit,
   isAnswered,
@@ -21,6 +21,10 @@ export const Pool = ({
   const [isLoading, setIsLoading] = useState(false)
 
   const onChange = (option) => setSelectedOption(option)
+  const handleSubmit = () => {
+    setIsLoading(true)
+    onSubmit(selectedOption)
+  }
 
   return (
     <Box borderRadius='5px' border={`2px solid ${colors.blue.light}`}>
@@ -30,44 +34,39 @@ export const Pool = ({
         borderBottom={`2px solid ${colors.blue.light}`}
         bg={colors.blue.light}
       >
-        <Text>{title}</Text>
+        <Text as='h3'>{title}</Text>
       </Box>
       <Box p={1} display='flex' justifyContent='space-between'>
         <Box
-          width={1 / 3}
+          width={isAnswered ? 1 / 4 : 1 / 3}
           display='flex'
           justifyContent='center'
           alignItems='center'
         >
-          <Box
-            borderRadius='100%'
-            border={`2px solid ${colors.blue.light}`}
-            width={100}
-            height={100}
-          />
+          <Image src={avatarUrl} borderRadius='100%' width={100} height={100} />
         </Box>
-        <Box width={2 / 3} px={2}>
-          {isAnswered ? (
-            <>
-              <Result
-                votes={optionOne.votes.length}
-                totalVotes={optionOne.votes.length + optionTwo.votes.length}
-                text={optionOne.text}
-                voted={votedOption}
-              />
-              <Result
-                votes={optionTwo.votes.length}
-                totalVotes={optionOne.votes.length + optionTwo.votes.length}
-                text={optionTwo.text}
-                voted={votedOption}
-              />
-            </>
-          ) : (
-            <>
-              <Text fontSize={24} fontWeight='bold'>
-                Would you Rather...
-              </Text>
-              <Box display='flex' alignItems='center'>
+        {isAnswered ? (
+          <Box width={3 / 4} px={2}>
+            <Result
+              votes={optionOne.votes.length}
+              totalVotes={optionOne.votes.length + optionTwo.votes.length}
+              text={optionOne.text}
+              voted={votedOption === OPTION_ONE}
+            />
+            <Result
+              votes={optionTwo.votes.length}
+              totalVotes={optionOne.votes.length + optionTwo.votes.length}
+              text={optionTwo.text}
+              voted={votedOption === OPTION_TWO}
+            />
+          </Box>
+        ) : (
+          <Box width={2 / 3} p={2}>
+            <Text fontSize={24} fontWeight='bold'>
+              Would you Rather...
+            </Text>
+            <Box display='flex' alignItems='center' my={3}>
+              <Text as='label'>
                 <input
                   type='radio'
                   checked={selectedOption === OPTION_ONE}
@@ -75,9 +74,11 @@ export const Pool = ({
                   value={OPTION_ONE}
                   disabled={isLoading}
                 />
-                <Text>{optionOne.text}</Text>
-              </Box>
-              <Box display='flex' alignItems='center'>
+                {optionOne.text}
+              </Text>
+            </Box>
+            <Box display='flex' alignItems='center' my={3}>
+              <Text as='label'>
                 <input
                   type='radio'
                   checked={selectedOption === OPTION_TWO}
@@ -85,12 +86,14 @@ export const Pool = ({
                   value={OPTION_TWO}
                   disabled={isLoading}
                 />
-                <Text>{optionTwo.text}</Text>
-              </Box>
-              <Button onClick={() => onSubmit(selectedOption)}>Submit</Button>
-            </>
-          )}
-        </Box>
+                {optionTwo.text}
+              </Text>
+            </Box>
+            <Button onClick={handleSubmit} width='100%' py={2}>
+              Submit
+            </Button>
+          </Box>
+        )}
       </Box>
     </Box>
   )
@@ -100,7 +103,7 @@ Pool.propTypes = {
   title: PropTypes.string.isRequired,
   optionOne: PropTypes.object.isRequired,
   optionTwo: PropTypes.object.isRequired,
-  id: PropTypes.string.isRequired,
+  // id: PropTypes.string.isRequired,
   avatarUrl: PropTypes.string.isRequired,
   isAnswered: PropTypes.bool.isRequired,
   onSubmit: PropTypes.func.isRequired,

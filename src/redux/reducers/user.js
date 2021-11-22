@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
 import {
+  ANSWER_QUESTION_SUCCESS,
   USER_GET_ALL,
   USER_GET_ALL_SUCCESS,
   USER_DELETE,
@@ -12,6 +13,8 @@ import {
   USER_AUTHENTICATE_SUCCESS,
   USER_AUTHENTICATE_FAILURE,
   USER_LOGOUT,
+  ASK_QUESTION,
+  ASK_QUESTION_SUCCESS,
 } from '../actionTypes'
 
 const initialState = {
@@ -23,8 +26,32 @@ const initialState = {
   error: '',
 }
 
-export default function (state = initialState, action) {
+export default function user(state = initialState, action) {
   switch (action.type) {
+    case ANSWER_QUESTION_SUCCESS: {
+      const { authedUser, qid, answer } = action.payload
+      const allById = {
+        ...state.allById,
+        [authedUser]: {
+          ...state.allById[authedUser],
+          answers: {
+            ...state.allById[authedUser].answers,
+            [qid]: answer,
+          },
+        },
+      }
+
+      const keys = Object.keys(allById)
+      const users = keys.map((key) => allById[key])
+
+      return {
+        ...state,
+        isLoading: false,
+        allById,
+        all: users,
+        authenticatedUser: allById[state.authenticatedUser.id],
+      }
+    }
     case USER_GET_ALL: {
       return {
         ...state,
@@ -105,8 +132,41 @@ export default function (state = initialState, action) {
       return {
         ...state,
         isAuthenticated: false,
-        error: '',
+        isLoading: false,
         authenticatedUser: {},
+        allById: {},
+        all: [],
+        error: '',
+      }
+    }
+    case ASK_QUESTION: {
+      return {
+        ...state,
+        isLoading: true,
+      }
+    }
+    case ASK_QUESTION_SUCCESS: {
+      const { newQuestion } = action.payload
+
+      const allById = {
+        ...state.allById,
+        [state.authenticatedUser.id]: {
+          ...state.allById[state.authenticatedUser.id],
+          questions: state.allById[state.authenticatedUser.id].questions.concat(
+            [newQuestion.id]
+          ),
+        },
+      }
+
+      const keys = Object.keys(allById)
+      const users = keys.map((key) => allById[key])
+
+      return {
+        ...state,
+        isLoading: false,
+        allById,
+        all: users,
+        authenticatedUser: allById[state.authenticatedUser.id],
       }
     }
     default:

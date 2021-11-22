@@ -18,7 +18,11 @@ const Image = styled('img')(
 Image.displayName = 'Image'
 
 Image.propTypes = {
-  alt: PropTypes.string.isRequired,
+  alt: 'some image',
+}
+
+Image.propTypes = {
+  alt: PropTypes.string,
   src: PropTypes.string.isRequired,
 }
 

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { useSelector, connect } from 'react-redux'
 import { Link, useLocation, useHistory } from 'react-router-dom'
 import { routes } from '../routes'
-import { Box, Button, Text } from '../UI'
+import { Box, Button, Image, Text } from '../UI'
 import { colors } from '../utils/colors'
 import { logout } from '../redux/actions/users'
 
@@ -22,20 +22,20 @@ export const Navbar = withConnect(({ isAuthenticated, logout: execLogout }) => {
   const { authenticatedUser } = useSelector((state) => state.user)
 
   useEffect(() => {
-    if (isAuthenticated) {
-      history.push({
-        pathname: routes.home.url,
-      })
-    } else {
+    if (!isAuthenticated && location.pathname !== routes.leaderboard.url) {
       history.push({
         pathname: routes.login.url,
       })
     }
-  }, [isAuthenticated])
+
+    if (isAuthenticated && location.pathname === routes.login.url) {
+      history.push({
+        pathname: routes.home.url,
+      })
+    }
+  }, [isAuthenticated, location.pathname])
 
   const handleLogout = () => execLogout()
-
-  // const routesNames = Object.keys(routes)
 
   return (
     <Box as='nav' boxShadow='0 5px 10px 0 rgb(0 0 0 / 3%)'>
@@ -78,11 +78,11 @@ export const Navbar = withConnect(({ isAuthenticated, logout: execLogout }) => {
           </Box>
           <Box mx={2}>
             <Link
-              to={routes.home.leaderboard}
+              to={routes.leaderboard.url}
               style={{
                 textDecoration: 'none',
                 color:
-                  location.pathname === routes.home.leaderboard
+                  location.pathname === routes.leaderboard.url
                     ? colors.blue.default
                     : colors.black.default,
               }}
@@ -93,13 +93,22 @@ export const Navbar = withConnect(({ isAuthenticated, logout: execLogout }) => {
         </Box>
         <Box>
           {isAuthenticated && (
-            <Box display='inline-flex'>
+            <Box display='inline-flex' alignItems='center'>
               <Box pr={2} mr={2}>
                 <Text borderRight='1px solid black'>
-                  logged as: {authenticatedUser.name}
+                  Hello! {authenticatedUser.name}
                 </Text>
               </Box>
-              <Button p={2} onClick={handleLogout}>
+              <Image
+                borderRadius='100%'
+                width={100}
+                height={100}
+                src={authenticatedUser.avatarURL}
+                size='2rem'
+                alt=''
+                mx='auto'
+              />
+              <Button ml={4} p={2} onClick={handleLogout}>
                 Logout
               </Button>
             </Box>
