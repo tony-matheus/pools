@@ -30,6 +30,7 @@ const buttonTypes = {
   `,
   secondary: css`
     background: white;
+    border: 1px solid ${colors.blue.default};
     color: ${colors.blue.default};
     &:hover,
     &:focus {

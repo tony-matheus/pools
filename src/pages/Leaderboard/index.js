@@ -9,7 +9,6 @@ export const Leaderboard = () => {
   const [leaderboardList, setLeaderboardList] = useState([])
 
   useEffect(() => {
-    console.log(all)
     const list = all.sort((a, b) => {
       const aResult = a.questions.length + Object.keys(a.answers).length
       const bResult = b.questions.length + Object.keys(b.answers).length

@@ -28,7 +28,13 @@ export const Result = ({ totalVotes, votes, text, voted }) => {
       my={2}
       bg={voted ? colors.blue.lightest : 'transparent'}
     >
+      {voted && (
+        <Text fontSize={14} color={colors.blue.default}>
+          Your vote
+        </Text>
+      )}
       <Text color={colors.blue.default}>Would you rather {text}?</Text>
+
       <Box>
         <ProgressBar percentage={percentage} />
         <Text textAlign='center'>

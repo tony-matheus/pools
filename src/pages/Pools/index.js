@@ -4,6 +4,7 @@ import { useSelector, connect } from 'react-redux'
 import { answerQuestion } from '../../redux/actions/questions'
 
 import { Box } from '../../UI'
+import { PageNotFound } from '../../UI/PageNotFound'
 import { Pool } from './Poll'
 
 const withConnect = (Component) => {
@@ -23,6 +24,10 @@ export const Pools = withConnect(
     const { allById: questionsById } = useSelector((state) => state.question)
 
     const question = questionsById[questionId]
+
+    if (!question) {
+      return <PageNotFound />
+    }
 
     const handleSubmit = (option) =>
       sendAnswerQuestion({

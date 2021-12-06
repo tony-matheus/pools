@@ -48,6 +48,7 @@ export const Home = withConnect((props) => {
             px={2}
             py={3}
             onClick={() => setViewOption(VIEW_OPTIONS.UNANSWERED)}
+            secondary={viewOptions !== VIEW_OPTIONS.UNANSWERED}
           >
             Unaswered
           </Button>
@@ -55,6 +56,7 @@ export const Home = withConnect((props) => {
             px={2}
             py={3}
             onClick={() => setViewOption(VIEW_OPTIONS.ANSWERED)}
+            secondary={viewOptions !== VIEW_OPTIONS.ANSWERED}
           >
             answered
           </Button>

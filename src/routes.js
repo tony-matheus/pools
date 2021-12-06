@@ -12,7 +12,7 @@ export const routes = {
     name: 'leaderboard',
   },
   newQuestion: {
-    url: '/new_question',
-    name: 'new_question',
+    url: '/add',
+    name: 'add',
   },
 }

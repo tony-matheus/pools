@@ -22,9 +22,7 @@ const withConnect = (Component) => {
 }
 
 const App = withConnect((props) => {
-  const { isAuthenticated, authenticatedUser, all } = useSelector(
-    (state) => state.user
-  )
+  const { isAuthenticated, all } = useSelector((state) => state.user)
 
   useEffect(() => {
     if (all.length === 0) {
