@@ -11,7 +11,6 @@ export const Pool = ({
   title,
   optionOne,
   optionTwo,
-  // id,
   avatarUrl,
   onSubmit,
   isAnswered,
@@ -99,13 +98,16 @@ export const Pool = ({
   )
 }
 
+Pool.defaultProps = {
+  votedOption: '',
+}
+
 Pool.propTypes = {
   title: PropTypes.string.isRequired,
   optionOne: PropTypes.object.isRequired,
   optionTwo: PropTypes.object.isRequired,
-  // id: PropTypes.string.isRequired,
   avatarUrl: PropTypes.string.isRequired,
   isAnswered: PropTypes.bool.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  votedOption: PropTypes.string.isRequired,
+  votedOption: PropTypes.string,
 }

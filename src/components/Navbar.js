@@ -1,7 +1,6 @@
-import { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { useSelector, connect } from 'react-redux'
-import { Link, useLocation, useHistory } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { routes } from '../routes'
 import { Box, Button, Image, Text } from '../UI'
 import { colors } from '../utils/colors'
@@ -17,23 +16,8 @@ const withConnect = (Component) => {
 
 export const Navbar = withConnect(({ isAuthenticated, logout: execLogout }) => {
   const location = useLocation()
-  const history = useHistory()
 
   const { authenticatedUser } = useSelector((state) => state.user)
-
-  useEffect(() => {
-    if (!isAuthenticated && location.pathname !== routes.leaderboard.url) {
-      history.push({
-        pathname: routes.login.url,
-      })
-    }
-
-    if (isAuthenticated && location.pathname === routes.login.url) {
-      history.push({
-        pathname: routes.home.url,
-      })
-    }
-  }, [isAuthenticated, location.pathname])
 
   const handleLogout = () => execLogout()
 

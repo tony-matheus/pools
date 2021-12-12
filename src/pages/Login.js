@@ -1,8 +1,10 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useSelector, connect } from 'react-redux'
+import { useLocation, useHistory } from 'react-router-dom'
 import { Box, Button, Text } from '../UI'
 import { authenticate } from '../redux/actions/users'
 import { Select } from '../UI/Select'
+import { routes } from '../routes'
 
 const withConnect = (Component) => {
   const actions = {
@@ -14,12 +16,29 @@ const withConnect = (Component) => {
 
 export const Login = withConnect(
   // eslint-disable-next-line no-unused-vars
-  ({ authenticate: execAuthenticate, ...restProps }) => {
+  ({ match, authenticate: execAuthenticate, ...restProps }) => {
+    const location = useLocation()
+    const history = useHistory()
     const [username, setUsername] = useState('sarahedo')
 
     const handleClick = () => execAuthenticate({ name: username })
 
-    const { error, all: users } = useSelector((state) => state.user)
+    const {
+      error,
+      all: users,
+      isAuthenticated,
+    } = useSelector((state) => state.user)
+
+    useEffect(() => {
+      if (isAuthenticated) {
+        const url = location?.state?.from?.includes('questions')
+          ? location.state.from
+          : routes.home.url
+        history.push({
+          pathname: url,
+        })
+      }
+    }, [isAuthenticated])
 
     return (
       <Box

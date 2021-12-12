@@ -15,4 +15,8 @@ export const routes = {
     url: '/add',
     name: 'add',
   },
+  question: {
+    url: '/questions/:question_id',
+    name: 'question',
+  },
 }

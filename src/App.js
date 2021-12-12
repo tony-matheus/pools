@@ -11,6 +11,7 @@ import { Navbar } from './components/Navbar'
 import { routes } from './routes'
 import { NewQuestion } from './pages/NewQuestion'
 import { Leaderboard } from './pages/Leaderboard'
+import { ProtectedRouter } from './ProtectedRouter'
 
 const withConnect = (Component) => {
   const actions = {
@@ -31,27 +32,34 @@ const App = withConnect((props) => {
   }, [all])
 
   return (
-    <Router basename='/'>
+    <>
       <Navbar isAuthenticated={isAuthenticated} />
-      <Route path={routes.leaderboard.url} exact>
-        <Leaderboard />
+
+      <Route path='/login'>
+        <Login />
       </Route>
-      {isAuthenticated ? (
+      <ProtectedRouter path='/'>
         <Box height='100vh'>
           <Route path={routes.home.url} exact>
             <Home />
           </Route>
-          <Route path='/questions/:question_id' exact component={Pools} />
+          <Route path={routes.question.url} exact component={Pools} />
           <Route path={routes.newQuestion.url} exact>
             <NewQuestion />
           </Route>
+          <Route path={routes.leaderboard.url} exact>
+            <Leaderboard />
+          </Route>
         </Box>
-      ) : (
-        <Route path='/login' exact>
-          <Login />
-        </Route>
-      )}
-    </Router>
+      </ProtectedRouter>
+    </>
   )
 })
-export default withStoreProvider(App)
+
+const RouteredApp = () => (
+  <Router basename='/'>
+    <App />
+  </Router>
+)
+
+export default withStoreProvider(RouteredApp)

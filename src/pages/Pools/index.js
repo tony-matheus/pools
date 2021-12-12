@@ -1,33 +1,33 @@
 /* eslint-disable react/prop-types */
-
+import { useEffect } from 'react'
 import { useSelector, connect } from 'react-redux'
-import { answerQuestion } from '../../redux/actions/questions'
+import { answerQuestion, getAllQuestions } from '../../redux/actions/questions'
 
 import { Box } from '../../UI'
+import { Loading } from '../../UI/Loading'
 import { PageNotFound } from '../../UI/PageNotFound'
 import { Pool } from './Poll'
 
 const withConnect = (Component) => {
-  const actions = { answerQuestion }
+  const actions = { answerQuestion, getAllQuestions }
 
   return connect(null, actions)(Component)
 }
 
 export const Pools = withConnect(
-  ({ match, answerQuestion: sendAnswerQuestion }) => {
+  ({ match, answerQuestion: sendAnswerQuestion, ...props }) => {
     const { params } = match
+
     const { question_id: questionId } = params
 
     const { authenticatedUser, allById: usersById } = useSelector(
       (state) => state.user
     )
-    const { allById: questionsById } = useSelector((state) => state.question)
-
-    const question = questionsById[questionId]
-
-    if (!question) {
-      return <PageNotFound />
-    }
+    const {
+      allById: questionsById,
+      isLoading,
+      all: allQuestions,
+    } = useSelector((state) => state.question)
 
     const handleSubmit = (option) =>
       sendAnswerQuestion({
@@ -35,6 +35,20 @@ export const Pools = withConnect(
         qid: questionId,
         answer: option,
       })
+
+    useEffect(() => {
+      if (allQuestions.length === 0) {
+        props.getAllQuestions(authenticatedUser.id)
+      }
+    }, [])
+
+    if (isLoading) return <Loading />
+
+    const question = questionsById[questionId]
+
+    if (!question) {
+      return <PageNotFound />
+    }
 
     const isAnswered =
       question.optionOne.votes.includes(authenticatedUser.id) ||
