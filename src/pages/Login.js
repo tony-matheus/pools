@@ -31,11 +31,8 @@ export const Login = withConnect(
 
     useEffect(() => {
       if (isAuthenticated) {
-        const url = location?.state?.from?.includes('questions')
-          ? location.state.from
-          : routes.home.url
         history.push({
-          pathname: url,
+          pathname: location.state.from,
         })
       }
     }, [isAuthenticated])
